@@ -49,7 +49,6 @@ class Expense extends Transference {
 		newExpense.value = 31.00;
 		newExpense.installments = 2;
 
-		
 		expense.edit(newExpense);
 		
 		System.out.println();
