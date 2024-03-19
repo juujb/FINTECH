@@ -11,6 +11,12 @@ class Transference {
 	public boolean fixed = false;
 	public String description;
 	
+	public Transference(double value, String description, boolean fixed) {
+		this.value = value;
+		this.description = description;
+		this.fixed = fixed;
+	}
+	
 	public String getEfetivationDate() {
 		return efetivationDate;
 	}
@@ -28,22 +34,4 @@ class Transference {
 		return createdDate;
 	}
 	
-	public static void main(String[] args) {
-		Transference transference = new Transference();
-		transference.value = 1000.50;  
-		transference.description = "FINTECH";
-		
-		System.out.println("O código dessa transferencia é: " + transference.getCode());
-		System.out.println("Valor: R$" + transference.value);
-		System.out.println("Data de Criação: " + transference.getCreatedDate());
-		System.out.println("Descrição: " + transference.description);
-		System.out.println("Fixa por padrão: " + (transference.fixed ? "SIM" : "NÃO"));
-		System.out.println("Data de Efetivação: " + transference.getEfetivationDate());
-		
-		transference.validateOperation();
-		System.out.println("Data de Efetivação após validar operação: " + transference.getEfetivationDate());
-		
-		transference.fixed = true;
-		System.out.println("Fixa após alteração: " + (transference.fixed ? "SIM" : "NÃO"));
-	}
 }
