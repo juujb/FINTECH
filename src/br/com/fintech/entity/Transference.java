@@ -2,7 +2,7 @@ package br.com.fintech.entity;
 
 import java.time.OffsetDateTime;
 
-class Transference extends AuditableDocument {
+public class Transference extends AuditableDocument {
 	private double value;
 	private OffsetDateTime efetivationDate;
 	private boolean fixed = false;

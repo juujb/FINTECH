@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-class AuditableDocument {
+public class AuditableDocument {
 	
 	private int code;
 	private OffsetDateTime createdDate;

@@ -8,7 +8,7 @@ import br.com.fintech.dao.implementation.ExpenseDao;
 import br.com.fintech.entity.Expense;
 import br.com.fintech.factory.DaoFactory;
 
-class DaoTest {
+public class DaoTest {
 	private static Instant instant;
 	private static ZoneOffset zoneOffset = ZoneOffset.of("-3:00");
 	
