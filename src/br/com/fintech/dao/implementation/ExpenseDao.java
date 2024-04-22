@@ -44,7 +44,7 @@ public class ExpenseDao implements GenericDao<Expense> {
 				stmt.setDate(7, efetivationDate);
 			}
 			
-			if (expense.getEfetivationDate() != null) {				
+			if (expense.getDueDate() != null) {				
 				java.sql.Date dueDate = new java.sql.Date(expense.getDueDate().toInstant().toEpochMilli());
 				stmt.setDate(8, dueDate);			
 			}

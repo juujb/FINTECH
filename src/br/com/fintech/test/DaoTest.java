@@ -16,11 +16,15 @@ public class DaoTest {
 		ExpenseDao expenseDao = DaoFactory.getExpenseDao();
 		
 		OffsetDateTime dateNow = OffsetDateTime.now(zoneOffset);
-		Expense newExpense = new Expense(500.00, false, "DESPESA FINTECH 2", 3, dateNow);
+		Expense newExpense = new Expense(700.00, false, "DESPESA FINTECH 3", 3, dateNow);
 		newExpense.validateOperation();
 		newExpense.setUserCode(1);
 		newExpense.setWalletCode(1);
 		
 		expenseDao.insert(newExpense);
+		
+		var expenseList = expenseDao.getAll();
+		
+		System.out.println(expenseList.size());
 	}
 }
