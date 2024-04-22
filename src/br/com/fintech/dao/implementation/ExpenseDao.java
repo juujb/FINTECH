@@ -13,41 +13,44 @@ import br.com.fintech.entity.Expense;
 
 public class ExpenseDao implements GenericDao<Expense> {
 	
-	private final Connection connection;
-	private final String TABLE_NAME;
-	private Instant instant;
+	private Connection connection;
 	private final ZoneOffset zoneOffset;
 	
 	public ExpenseDao() {
 		super();
+        zoneOffset = ZoneOffset.of("+03:00");
         connection = OracleConnectionManager.getInstance().getConnection();
-        TABLE_NAME = "DESPESA";
-        zoneOffset = ZoneOffset.of("-03:00");
     }
 
 	public void insert(Expense expense) {
 		PreparedStatement stmt = null;
 		
 		try {
-			String query = String.format("INSERT INTO T_%s (CODIGO_DESPESA, VALOR, PARCELAS, PAGA, DATA_DE_CRIACAO, DATA_DE_VENCIMENTO, DATA_DE_EFETIVACAO, FIXA, DESCRICAO) VALUES (SQ_%s, ?, ?, ?, ?, ?, ?, ?, ?)", TABLE_NAME, TABLE_NAME);
+			String query = "INSERT INTO T_DESPESA (CD_DESPESA, CD_CARTEIRA, CD_USUARIO, DS_DESPESA, VL_DESPESA, NR_PARCELAS, DT_CRIACAO, DT_EFETIVACAO, DT_VENCIMENTO, ST_FIXA, ST_PAGA) VALUES (SQ_DESPESA.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = connection.prepareStatement(query);
 			
-			stmt.setDouble(1, expense.getValue());
-			stmt.setInt(2, expense.getInstallments());
-			stmt.setBoolean(3, expense.getPaidStatus());
+			stmt.setInt(1, expense.getWalletCode());
+			stmt.setInt(2, expense.getUserCode());
+			stmt.setString(3, expense.getDescription());
+			stmt.setDouble(4, expense.getValue());
+			stmt.setInt(5, expense.getInstallments());
 			
-			Instant currentDate = java.time.OffsetDateTime.ofInstant(instant , zoneOffset).toInstant();
+			Instant currentDate = java.time.OffsetDateTime.now(zoneOffset).toInstant();
 			java.sql.Date creationDate = new java.sql.Date(currentDate.toEpochMilli());
-			stmt.setDate(4, creationDate);
+			stmt.setDate(6, creationDate);
 			
-			java.sql.Date dueDate = new java.sql.Date(expense.getDueDate().toInstant().toEpochMilli());
-			stmt.setDate(5, dueDate);
+			if (expense.getEfetivationDate() != null) {				
+				java.sql.Date efetivationDate = new java.sql.Date(expense.getEfetivationDate().toInstant().toEpochMilli());
+				stmt.setDate(7, efetivationDate);
+			}
 			
-			java.sql.Date efetivationDate = new java.sql.Date(expense.getEfetivationDate().toInstant().toEpochMilli());
-			stmt.setDate(6, efetivationDate);
+			if (expense.getEfetivationDate() != null) {				
+				java.sql.Date dueDate = new java.sql.Date(expense.getDueDate().toInstant().toEpochMilli());
+				stmt.setDate(8, dueDate);			
+			}
 			
-			stmt.setBoolean(7, expense.isFixed());
-			stmt.setString(8, expense.getDescription());
+			stmt.setBoolean(9, expense.isFixed());
+			stmt.setBoolean(10, expense.getPaidStatus());
 			
 			stmt.executeUpdate();
 		} catch (SQLException ex) {

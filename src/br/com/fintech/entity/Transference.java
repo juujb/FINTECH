@@ -3,6 +3,8 @@ package br.com.fintech.entity;
 import java.time.OffsetDateTime;
 
 public class Transference extends AuditableDocument {
+	private int walletCode;
+	private int userCode;
 	private double value;
 	private OffsetDateTime efetivationDate;
 	private boolean fixed = false;
@@ -21,7 +23,7 @@ public class Transference extends AuditableDocument {
 	
 	public void validateOperation() {
 		if (efetivationDate == null)
-			efetivationDate = OffsetDateTime.ofInstant(instant, zoneOffset);
+			efetivationDate = OffsetDateTime.now(zoneOffset);
 	}
 
 	public double getValue() {
@@ -46,6 +48,22 @@ public class Transference extends AuditableDocument {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getWalletCode() {
+		return walletCode;
+	}
+
+	public void setWalletCode(int walletCode) {
+		this.walletCode = walletCode;
+	}
+
+	public int getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(int userCode) {
+		this.userCode = userCode;
 	}
 	
 }

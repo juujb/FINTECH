@@ -1,6 +1,5 @@
 package br.com.fintech.entity;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -9,7 +8,6 @@ public class AuditableDocument {
 	private int code;
 	private OffsetDateTime createdDate;
 	
-	protected Instant instant;
 	protected ZoneOffset zoneOffset;
 
 	public AuditableDocument() {

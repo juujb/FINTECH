@@ -23,7 +23,7 @@ public class OracleConnectionManager {
   
         	connection = DriverManager.getConnection(
         			"jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL",
-        			"OPS$XXXX", "XXXXX");
+        			"RM553298", "250103");
   
         } catch (Exception e) {
         	e.printStackTrace();

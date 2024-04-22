@@ -1,6 +1,6 @@
 package br.com.fintech.entity;
 
-class Investment extends Transference {
+public class Investment extends Transference {
 	private String investmentType;
 	
 	public Investment(double value, String description, boolean fixed, String investmentType) {
