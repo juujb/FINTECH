@@ -2,10 +2,18 @@ package br.com.fintech.dao.implementation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.fintech.dao.interfaces.GenericDao;
@@ -58,7 +66,7 @@ public class ExpenseDao implements GenericDao<Expense> {
 		} finally {
 			try {
 				stmt.close();
-				connection.close();
+//				connection.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
@@ -67,7 +75,53 @@ public class ExpenseDao implements GenericDao<Expense> {
 	
 	public List<Expense> getAll() {
 		// TODO
+		PreparedStatement stmt = null;
 		var placeHolder = new ArrayList<Expense>();
+		
+		
+		try {
+			String query = "SELECT * FROM T_DESPESA";
+			stmt = connection.prepareStatement(query);
+			ResultSet rst = stmt.executeQuery();
+			
+			
+			
+			while(rst.next()) {
+//				int CD_DESPESA = rst.getInt(1);
+				int CD_CARTEIRA = rst.getInt(2);
+//				int CD_USUARIO = rst.getInt(3);
+				String DS_DESPESA = rst.getString(4);
+				String VL_DESPESA = rst.getString(5);
+//				int NR_PARCELAS = rst.getInt(6);
+//				String DT_CRIACAO = rst.getString(7);
+//				String DT_EFETIVACAO = rst.getString(8);
+				String DT_VENCIMENTO = rst.getString(9);
+				String ST_FIXA = rst.getString(10);
+				String ST_PAGA = rst.getString(11);
+	
+				try {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				    Date parsedDate = dateFormat.parse(DT_VENCIMENTO);
+				    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+				    
+					Expense expense = new Expense(Double.parseDouble(VL_DESPESA), "1".equals(ST_FIXA), DS_DESPESA, CD_CARTEIRA,timestamp.toInstant().atOffset( ZoneOffset.UTC ));
+					expense.setPaidStatus("1".equals(ST_PAGA));
+					placeHolder.add(expense);
+				} catch(Exception e) {}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+//				connection.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	
+		
 		return placeHolder;
+	
 	}
 }
