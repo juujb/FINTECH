@@ -12,9 +12,19 @@ public class Transference extends AuditableDocument {
 	
 	public Transference(double value, String description, boolean fixed) {
 		super();
-		this.setValue(value);
-		this.setDescription(description);
-		this.setFixed(fixed);
+		setValue(value);
+		setDescription(description);
+		setFixed(fixed);
+	}
+	
+	public Transference(int code, int userCode, int walletCode, double value, String description, boolean fixed, OffsetDateTime efetivationDate, OffsetDateTime createdDate) {
+		super(code, createdDate);
+		setUserCode(userCode);
+		setWalletCode(walletCode);
+		setValue(value);
+		this.efetivationDate = efetivationDate;
+		setFixed(fixed);
+		setDescription(description);
 	}
 	
 	public OffsetDateTime getEfetivationDate() {

@@ -4,17 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import br.com.fintech.dao.interfaces.GenericDao;
 import br.com.fintech.entity.Expense;
@@ -66,62 +59,69 @@ public class ExpenseDao implements GenericDao<Expense> {
 		} finally {
 			try {
 				stmt.close();
-//				connection.close();
+				connection.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 		}
 	}
 	
-	public List<Expense> getAll() {
-		// TODO
+	public ArrayList<Expense> getAll() {
 		PreparedStatement stmt = null;
-		var placeHolder = new ArrayList<Expense>();
-		
+		var expenseList = new ArrayList<Expense>();
 		
 		try {
 			String query = "SELECT * FROM T_DESPESA";
 			stmt = connection.prepareStatement(query);
 			ResultSet rst = stmt.executeQuery();
 			
-			
-			
 			while(rst.next()) {
-//				int CD_DESPESA = rst.getInt(1);
-				int CD_CARTEIRA = rst.getInt(2);
-//				int CD_USUARIO = rst.getInt(3);
-				String DS_DESPESA = rst.getString(4);
-				String VL_DESPESA = rst.getString(5);
-//				int NR_PARCELAS = rst.getInt(6);
-//				String DT_CRIACAO = rst.getString(7);
-//				String DT_EFETIVACAO = rst.getString(8);
-				String DT_VENCIMENTO = rst.getString(9);
-				String ST_FIXA = rst.getString(10);
-				String ST_PAGA = rst.getString(11);
+				int expenseCode = rst.getInt(1);
+				int walletCode = rst.getInt(2);
+				int userCode = rst.getInt(3);
+				String description = rst.getString(4);
+				double expenseValue = rst.getDouble(5);
+				int installments = rst.getInt(6);
+				long createdDate = rst.getDate(7).getTime();
+				long efetivationDate = rst.getDate(8).getTime();
+				long dueDate = rst.getDate(9).getTime();
+				boolean isFixed = rst.getBoolean(10);
+				boolean paidStatus = rst.getBoolean(11);
 	
 				try {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				    Date parsedDate = dateFormat.parse(DT_VENCIMENTO);
-				    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-				    
-					Expense expense = new Expense(Double.parseDouble(VL_DESPESA), "1".equals(ST_FIXA), DS_DESPESA, CD_CARTEIRA,timestamp.toInstant().atOffset( ZoneOffset.UTC ));
-					expense.setPaidStatus("1".equals(ST_PAGA));
-					placeHolder.add(expense);
-				} catch(Exception e) {}
+					Expense expense = new Expense(
+							expenseCode,
+							userCode,
+							walletCode,
+							expenseValue,
+							description,
+							isFixed,
+							paidStatus,
+							OffsetDateTime.ofInstant(Instant.ofEpochMilli(efetivationDate), zoneOffset),
+							OffsetDateTime.ofInstant(Instant.ofEpochMilli(createdDate), zoneOffset),
+							installments,
+							OffsetDateTime.ofInstant(Instant.ofEpochMilli(dueDate), zoneOffset)
+					);
+					
+					expenseList.add(expense);
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}finally {
 			try {
 				stmt.close();
-//				connection.close();
+				connection.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 		}
 	
 		
-		return placeHolder;
+		return expenseList;
 	
 	}
 }

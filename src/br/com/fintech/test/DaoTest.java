@@ -21,10 +21,12 @@ public class DaoTest {
 		newExpense.setUserCode(1);
 		newExpense.setWalletCode(1);
 		
-		expenseDao.insert(newExpense);
+		// expenseDao.insert(newExpense);
 		
-		var expenseList = expenseDao.getAll();
+		var expenseList = expenseDao.getAll();		
 		
-		System.out.println(expenseList.size());
+		//	expenseList.forEach(null);
+
+		System.out.println(expenseList.get(1).getDescription());
 	}
 }

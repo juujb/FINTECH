@@ -9,8 +9,15 @@ public class Expense extends Transference {
 	
 	public Expense(double value, boolean fixed, String description, int installments, OffsetDateTime dueDate) {
 		super(value, description, fixed);
-		this.setInstallments(installments);
-		this.setDueDate(dueDate);
+		setInstallments(installments);
+		setDueDate(dueDate);
+	}
+	
+	public Expense(int code, int userCode, int walletCode, double value, String description, boolean fixed, boolean paidStatus, OffsetDateTime efetivationDate, OffsetDateTime createdDate, int installments, OffsetDateTime dueDate) {
+		super(code, userCode, walletCode, value, description, fixed, efetivationDate, createdDate);
+		setInstallments(installments);
+		setDueDate(dueDate);
+		setPaidStatus(paidStatus);
 	}
 	
 	public boolean getPaidStatus() {

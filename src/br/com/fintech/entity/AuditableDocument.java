@@ -7,12 +7,14 @@ public class AuditableDocument {
 	
 	private int code;
 	private OffsetDateTime createdDate;
-	
-	protected ZoneOffset zoneOffset;
+	protected ZoneOffset zoneOffset = ZoneOffset.of("-03:00");
 
-	public AuditableDocument() {
-		zoneOffset = ZoneOffset.of("-03:00");
+	public AuditableDocument(int code, OffsetDateTime createdDate) {
+		setCode(code);
+		setCreatedDate(createdDate);
 	}
+	
+	public AuditableDocument() {}
 
 	public int getCode() {
 		return code;

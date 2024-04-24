@@ -1,8 +1,8 @@
 package br.com.fintech.dao.interfaces;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface GenericDao<T> {
-	List<T> getAll();
+	ArrayList<T> getAll();
 	void insert(T object);
 }
