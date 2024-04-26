@@ -20,10 +20,10 @@ public class ExpenseDao implements GenericDao<Expense> {
 	public ExpenseDao() {
 		super();
         zoneOffset = ZoneOffset.of("+03:00");
-        connection = OracleConnectionManager.getInstance().getConnection();
     }
 
 	public void insert(Expense expense) {
+        connection = OracleConnectionManager.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
@@ -67,6 +67,7 @@ public class ExpenseDao implements GenericDao<Expense> {
 	}
 	
 	public ArrayList<Expense> getAll() {
+        connection = OracleConnectionManager.getInstance().getConnection();
 		PreparedStatement stmt = null;
 		var expenseList = new ArrayList<Expense>();
 		

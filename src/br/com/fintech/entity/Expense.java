@@ -20,6 +20,13 @@ public class Expense extends Transference {
 		setPaidStatus(paidStatus);
 	}
 	
+	public Expense(int userCode, int walletCode, double value, String description, boolean fixed, boolean paidStatus, OffsetDateTime efetivationDate, int installments, OffsetDateTime dueDate) {
+		super(userCode, walletCode, value, description, fixed, efetivationDate);
+		setInstallments(installments);
+		setDueDate(dueDate);
+		setPaidStatus(paidStatus);
+	}
+	
 	public boolean getPaidStatus() {
 		return paidStatus;
 	}

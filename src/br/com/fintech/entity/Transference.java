@@ -27,6 +27,15 @@ public class Transference extends AuditableDocument {
 		setDescription(description);
 	}
 	
+	public Transference(int userCode, int walletCode, double value, String description, boolean fixed, OffsetDateTime efetivationDate) {
+		setUserCode(userCode);
+		setWalletCode(walletCode);
+		setValue(value);
+		this.efetivationDate = efetivationDate;
+		setFixed(fixed);
+		setDescription(description);
+	}
+	
 	public OffsetDateTime getEfetivationDate() {
 		return efetivationDate;
 	}
